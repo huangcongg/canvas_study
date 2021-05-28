@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="canvas" width="800" height="600"></canvas>
+  <video src="img/百年党史.mp4" controls="controls" width="800"></video>
+  <script>
+    
+    let video = document.querySelector("video")
+    /** @type {HTMLCanvasElement} */
+    let canvas = document.getElementById("canvas")
+    let ctx = canvas.getContext("2d")
+
+    let interId;
+    video.onplay=()=>{
+      interId = setInterval(()=>{
+        ctx.clearRect(0,0,800,600)
+        ctx.fillRect(0,0,800,600)
+        ctx.drawImage(video,0,75,800,450)
+        ctx.strokeStyle="white"
+        ctx.font="20px 微软雅黑"
+        ctx.strokeText("老黄制造",360,40)
+      },16)
+    }
+    video.onpause=()=>{
+      clearInterval(interId)
+    }
+    
+  </script>
+</body>
+</html>

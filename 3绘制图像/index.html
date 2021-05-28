@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="canvas1" width="600" height="600"></canvas>
+  <script>
+    /** @type {HTMLCanvasElement} */
+    let canvas = document.querySelector('#canvas1')
+    let ctx = canvas.getContext('2d')
+
+    // 绘制图像
+    // ctx.drawImage(图像位置,x位置,y位置)
+    // ctx.drawImage(图像位置,x位置,y位置,宽度,高度)
+    // ctx.drawImage(图像位置,图像裁剪的位置x,图像裁剪的位置y,裁剪的宽度,裁剪的高度,x位置,y位置,宽度,高度)
+    let img = new Image()
+    img.src = "./img/a.jpg"
+
+    let img2 = new Image()
+    img2.src = "./img/b.svg"
+
+    // 图片载入数据后再绘制内容
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0)
+      ctx.fillStyle="white"
+      ctx.font="20px 微软雅黑"
+      ctx.fillText('老黄打码',400,340)
+    }
+
+    // img2和img渲染出来的速度取决于网络速度
+    img2.onload = ()=>{ 
+      ctx.drawImage(img2,0,0,100,100,150,350,200,200)
+    }
+    
+    
+  </script>
+</body>
+</html>
