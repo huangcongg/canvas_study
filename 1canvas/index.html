@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="canvas1" width="600" height="600">
+    这里的内容，正常的画布是不是显示的，您的浏览器不支持canvas
+  </canvas>
+  <script>
+    // 1.找到画布对象
+    var canvas = document.querySelector('#canvas1')
+    console.log(canvas);
+
+    // 2.上下文对象（画笔）
+    var ctx = canvas.getContext('2d')
+    console.log(ctx);
+
+    // 3.绘制路径
+    ctx.rect(50,50,300,300)
+
+    // 4.填充
+    ctx.fillStyle = "aqua";
+    ctx.fill();
+
+    // 4.描边,渲染路径
+    ctx.lineWidth = 20
+    ctx.strokeStyle = "red"
+    ctx.stroke()
+  </script>
+</body>
+</html>

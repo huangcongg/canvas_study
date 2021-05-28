@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="canvas1" width="600" height="600"></canvas>
+  <script>
+    // VS Code编辑器在不安装相关插件的情况下，使用canvas绘制图形是没有代码提示的，这个时候可以添加一行注释来解决
+    /** @type {HTMLCanvasElement} */ 
+    var canvas1 = document.querySelector('#canvas1')
+    var ctx = canvas1.getContext('2d')
+
+    // 设置开始路径
+    ctx.beginPath()
+    // 设置绘制的起始点
+    ctx.moveTo(50,50)
+
+    // 设置经过某个位置
+    ctx.lineTo(50,300)
+    ctx.lineTo(300,100)
+    ctx.lineTo(300,250)
+    // 设置结束路径
+    ctx.closePath()
+
+    // 绘制路径
+    ctx.lineCap = "round" // 起始路径的线段边缘设置为圆角
+    // ctx.lineJoin = "round"
+    ctx.miterLimit = 2
+    ctx.strokeStyle = "aqua"
+    ctx.lineWidth = 20
+    ctx.stroke()
+  </script>
+</body>
+</html>
