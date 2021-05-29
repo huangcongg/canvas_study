@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<canvas id="canvas" width="800" height="600"></canvas>
+		<script>
+			let canvas = document.querySelector('#canvas')
+			let ctx = canvas.getContext('2d')
+			
+			ctx.fillStyle = "pink"
+			ctx.fillRect(0,0,100,100)
+			ctx.save()
+			
+			// 移动的是整个坐标尺，原来已经画出来的对象不会移动
+			ctx.scale(2,4)
+			ctx.fillStyle = "aqua"
+			ctx.fillRect(100,0,300,100)
+			ctx.save()
+			
+			ctx.restore()
+			ctx.restore()
+			ctx.fillRect(0,150,100,100)
+			
+		</script>
+	</body>
+</html>

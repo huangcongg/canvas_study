@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- canvas的width、height属性和style属性里面的width、height是不一样的
+  canvas的width和height是要绘制的图像的像素点的大小
+  style里面的width和height是canvas这个元素的显示大小
+  -->
+  <canvas id="canvas" width="200" height="150" style="width:800px;height:600px;"></canvas>
+  <script>
+    /** @type {HTMLCanvasElement} */
+    let canvas = document.querySelector('#canvas');
+    let ctx = canvas.getContext('2d')
+
+    let img = new Image()
+    // img.setAttribute("crossOrigin",'Anonymous')
+    img.src = 'img/a.jpg'
+    img.onload = ()=>{
+      ctx.drawImage(img,0,0)
+    }
+  </script>
+</body>
+</html>
