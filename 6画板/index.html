@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin:0;
+				padding:0;
+				box-sizing: border-box;
+			}
+			body{
+				width: 100vw;
+				height: 100vh;
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-start;
+			}
+			.candan{
+				height: 100px;
+				width: 100vw;
+				display: flex;
+				border: 3px solid #ccc;
+				justify-content: space-around;
+				align-items: center;
+			}
+			.btn{
+				width: 150px;
+				height: 50px;
+				border: 1px solid #ccc;
+				border-radius: 20px;
+				text-align:center;
+				line-height: 50px;
+				color:#999;
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: auto 100%;
+			}
+			#canvas{
+				flex: 1;
+				width: 100vw;
+			}
+			.btn.active{
+				box-shadow: 0 0 20px deepskyblue;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 
+		 将画笔功能：能够拖动鼠标在页面内绘图，能够设置画笔的粗细，设置画笔的颜色
+		 能够在任意位置绘制圆形：拖动鼠标即可随意在任意位置绘制圆形，并且可以随意定制大小
+		 能够在任意位置绘制矩形，拖动鼠标既可以随意在任意位置绘制矩形，并且可以随意定制大小
+		 -->
+		 <div class="candan">
+		 	<div class="btn" id="huabi" style="background-image: url(img/huabi.png);"></div>
+		 	<div class="btn" id="rect">矩形</div>
+		 	<div class="btn">圆形</div>
+		 	<div class="btn">线段粗细</div>
+		 	<div class="btn">画笔颜色</div>
+		 </div>
+		 <canvas id="canvas" ></canvas>
+		 <script type="text/javascript">
+			 
+			let allBtn = document.querySelectorAll('.btn')
+		 	let canvas = document.querySelector('#canvas')
+			console.log([canvas])
+			let ctx = canvas.getContext('2d')
+			canvas.setAttribute('width',canvas.offsetWidth)
+			canvas.setAttribute('height',canvas.offsetHeight)
+			let huaban = {
+				type: "none",
+				isDraw: false,
+				beginX: 0,
+				beginY: 0,
+				imageData: null,
+				huabiFn:(e)=>{
+					let x = e.pageX - canvas.offsetLeft;
+					let y = e.pageY - canvas.offsetTop;
+					ctx.beginPath()
+					ctx.arc(x,y,3,0,2*Math.PI)
+					ctx.fill()
+					ctx.closePath()
+				},
+				rectFn:(e)=>{
+					let x = e.pageX - canvas.offsetLeft;
+					let y = e.pageY - canvas.offsetTop;
+					ctx.clearRect(0,0,canvas.offsetWidth,canvas.offsetHeight)
+					if(huaban.imageData!=null){
+						ctx.putImageData(huaban.imageData,0,0,0,0,canvas.offsetWidth,canvas.offsetHeight)
+					}
+					ctx.beginPath()
+					ctx.rect(huaban.beginX,huaban.beginY,x-huaban.beginX,y-huaban.beginY)
+					ctx.stroke()
+					ctx.closePath()
+				}
+				
+			}
+			
+			let huabiBtn = document.querySelector('#huabi')
+			huabiBtn.onclick=()=>{
+				allBtn.forEach((item,i)=>{
+					item.classList.remove('active')
+				})
+				huabiBtn.classList.add("active")
+				huaban.type = "huabi"
+				huaban.isDraw = false
+			}
+			
+			let rectBtn = document.querySelector('#rect')
+			rectBtn.onclick=()=>{
+				allBtn.forEach((item,i)=>{
+					item.classList.remove('active')
+				})
+				rectBtn.classList.add("active")
+				huaban.type = "rect"
+				huaban.isDraw = false
+			}
+			
+			// 监听鼠标按下事件
+			canvas.onmousedown=(e)=>{
+				huaban.isDraw=true;
+				if(huaban.type=="rect"){
+					let x = e.pageX - canvas.offsetLeft;
+					let y = e.pageY - canvas.offsetTop;
+					huaban.beginX = x;
+					huaban.beginY = y;
+				}
+			}
+			// 监听鼠标抬起事件
+			canvas.onmouseup=()=>{
+				huaban.imageData = ctx.getImageData(0,0,canvas.offsetWidth,canvas.offsetHeight)
+				huaban.isDraw=false
+			}
+			
+			canvas.onmousemove=function(e){
+				if(huaban.isDraw){
+					huaban[huaban.type+'Fn'](e)
+				}
+			}
+		 </script>
+	</body>
+</html>
