@@ -24,7 +24,7 @@
 				justify-content: space-around;
 				align-items: center;
 			}
-			.btn{
+			.btn,.btn1{
 				width: 150px;
 				height: 50px;
 				border: 1px solid #ccc;
@@ -40,9 +40,39 @@
 				flex: 1;
 				width: 100vw;
 			}
-			.btn.active{
+			.btn.active,.btn1.active{
 				box-shadow: 0 0 20px deepskyblue;
 			}
+			.line{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.xi:after{
+				content:'';
+				background: #333;
+				width:6px;
+				height:6px;
+				display: block;
+				border-radius: 100%;
+			}
+			.normal:after{
+				content:'';
+				background: #333;
+				width:16px;
+				height:16px;
+				display: block;
+				border-radius: 100%;
+			}
+			.cu:after{
+				content:'';
+				background: #333;
+				width:32px;
+				height:32px;
+				display: block;
+				border-radius: 100%;
+			}
+			
 		</style>
 	</head>
 	<body>
@@ -55,8 +85,12 @@
 		 	<div class="btn" id="huabi" style="background-image: url(img/huabi.png);"></div>
 		 	<div class="btn" id="rect">矩形</div>
 		 	<div class="btn">圆形</div>
-		 	<div class="btn">线段粗细</div>
-		 	<div class="btn">画笔颜色</div>
+		 	<div class="btn">橡皮擦</div>
+		 	<div class="btn btn2 download">下载图片</div>
+		 	<div class="btn1 line xi active"></div>
+		 	<div class="btn1 line normal"></div>
+		 	<div class="btn1 line cu"></div>
+		 	<div class="btn"><input type="color" name="color" id="color" value="" /></div>
 		 </div>
 		 <canvas id="canvas" ></canvas>
 		 <script type="text/javascript">
@@ -72,14 +106,18 @@
 				isDraw: false,
 				beginX: 0,
 				beginY: 0,
+				lineWidth: 6,
 				imageData: null,
+				color:"#000",
 				huabiFn:(e)=>{
 					let x = e.pageX - canvas.offsetLeft;
 					let y = e.pageY - canvas.offsetTop;
-					ctx.beginPath()
-					ctx.arc(x,y,3,0,2*Math.PI)
-					ctx.fill()
-					ctx.closePath()
+					ctx.lineWidth = huaban.lineWidth
+					ctx.lineCap="round"
+					ctx.lineJoin="round"
+					ctx.lineTo(x,y)
+					ctx.strokeStyle=huaban.color
+					ctx.stroke()
 				},
 				rectFn:(e)=>{
 					let x = e.pageX - canvas.offsetLeft;
@@ -91,6 +129,7 @@
 					ctx.beginPath()
 					ctx.rect(huaban.beginX,huaban.beginY,x-huaban.beginX,y-huaban.beginY)
 					ctx.stroke()
+					ctx.strokeStyle=huaban.color
 					ctx.closePath()
 				}
 				
@@ -125,17 +164,71 @@
 					huaban.beginX = x;
 					huaban.beginY = y;
 				}
+				if(huaban.type=="huabi"){
+					let x = e.pageX - canvas.offsetLeft;
+					let y = e.pageY - canvas.offsetTop;
+					huaban.beginX = x;
+					huaban.beginY = y;
+					ctx.beginPath()
+					ctx.moveTo(x,y)
+				}
 			}
 			// 监听鼠标抬起事件
 			canvas.onmouseup=()=>{
 				huaban.imageData = ctx.getImageData(0,0,canvas.offsetWidth,canvas.offsetHeight)
 				huaban.isDraw=false
+				
+				if(huaban.type=="huabi"){
+					ctx.closePath()
+				}
 			}
 			
+			// 鼠标移动
 			canvas.onmousemove=function(e){
 				if(huaban.isDraw){
 					huaban[huaban.type+'Fn'](e)
 				}
+			}
+			
+			// 下载图片
+			let downloadBtn = document.querySelector(".download")
+			downloadBtn.onclick = function(){
+				let url = canvas.toDataURL()
+				console.log(url)
+				// let img = new Image()
+				// img.src=url
+				let div = document.createElement("div")
+				div.setAttribute('style',"transform: translate(-50%,-50%); width:50%;height:50%;position: fixed;left:50%;top:50%;overflow: hidden;border:1px solid #ccc;")
+				let img = document.createElement('img')
+				img.setAttribute('src',url)
+				div.appendChild(img)
+				document.body.appendChild(div)
+			}
+			
+			// 设置粗细的按钮
+			let lineDivs = document.querySelectorAll(".line")
+			lineDivs.forEach((item,i)=>{
+				item.onclick=()=>{
+					lineDivs.forEach((item1,i1)=>{
+						item1.classList.remove('active')
+					})
+					item.classList.add('active')
+					if(i==0){
+						huaban.lineWidth=6
+					}else if(i==1){
+						huaban.lineWidth=16;
+					}else {
+						huaban.lineWidth=32;
+					}
+				}
+			})
+			
+			// 监听颜色设置改变事件
+			let colorInput = document.querySelector("#color")
+			colorInput.onchange = (e)=>{
+				// console.log(e)
+				// console.log(colorInput.value)
+				huaban.color=colorInput.value
 			}
 		 </script>
 	</body>

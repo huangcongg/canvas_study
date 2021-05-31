@@ -180,3 +180,8 @@ globalCompositeOperation属性设置或返回如何将一个源（新的）图�
     /** @type {HTMLCanvasElement} */ 
     ```
 
+* es6常用dom操作
+  * document.createElement("div")：创建元素
+  * div.setAttribute("width","600")：给元素设置属性
+  * document.body.append(div)：追加子节点
+
